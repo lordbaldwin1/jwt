@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
-import { ONE_HOUR_IN_SECONDS } from "./config";
 import type { Request } from "express";
 import { UnauthorizedError } from "./api/error";
 
+export const ONE_HOUR_IN_SECONDS = 60*60;
 const TOKEN_ISSUER = "jwt-auth";
 type Payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
@@ -15,7 +15,7 @@ export async function checkPasswordHash(password: string, hash: string) {
   return await bcrypt.compare(password, hash);
 }
 
-export async function createJWT(userId: string, secret: string, expiresIn = ONE_HOUR_IN_SECONDS) {
+export function signJWT(userId: string, secret: string, expiresIn = ONE_HOUR_IN_SECONDS) {
   const timeInSeconds = Math.floor(Date.now() / 1000);
 
   const payload: Payload = {
@@ -26,6 +26,25 @@ export async function createJWT(userId: string, secret: string, expiresIn = ONE_
   };
 
   return jwt.sign(payload, secret);
+}
+
+export function verifyJWT(token: string, secret: string) {
+  let decoded: Payload;
+  try {
+    decoded = jwt.verify(token, secret) as JwtPayload;
+  } catch (error) {
+    throw new UnauthorizedError("Invalid JWT token");
+  }
+
+  if (decoded.iss !== TOKEN_ISSUER) {
+    throw new UnauthorizedError("Invalid JWT issuer");
+  }
+
+  if (!decoded.sub) {
+    throw new UnauthorizedError("User ID not present in JWT");
+  }
+
+  return decoded.sub;
 }
 
 export function getBearerToken(req: Request) {

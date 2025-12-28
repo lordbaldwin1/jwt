@@ -1,3 +1,5 @@
+import { ONE_HOUR_IN_SECONDS } from "./auth";
+
 type Config = {
   baseURL: string;
   port: string;
@@ -7,8 +9,6 @@ type Config = {
   jwtSecret: string;
   clientURL: string;
 }
-
-export const ONE_HOUR_IN_SECONDS = 60*60;
 
 function envOrThrow(key: string) {
   const val = process.env[key];
