@@ -1,9 +1,12 @@
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { Request } from "express";
-import { UnauthorizedError } from "./api/error";
+import { UnauthorizedError } from "../../error";
+import { randomBytes } from "node:crypto";
 
 export const ONE_HOUR_IN_SECONDS = 60*60;
+export const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+export const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const TOKEN_ISSUER = "jwt-auth";
 type Payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
@@ -54,4 +57,8 @@ export function getBearerToken(req: Request) {
   }
   const splitHeader = header.split(" ");
   return splitHeader[1];
+}
+
+export function makeRefreshToken() {
+  return randomBytes(32).toString('hex');
 }

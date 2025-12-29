@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from "../error";
+import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from "../../error";
 
 export function middlewareErrorHandler(err: Error, _: Request, res: Response, __: NextFunction) {
   let statusCode = 500;
