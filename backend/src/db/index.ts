@@ -1,7 +1,10 @@
-import { SQL } from "bun";
+import pg from "pg";
 import { config } from "../config";
-import { drizzle } from "drizzle-orm/bun-sql";
+import { drizzle } from "drizzle-orm/node-postgres";
+
+const pool = new pg.Pool({
+  connectionString: config.databaseURL,
+});
 
 console.log("Connected to database.");
-const client = new SQL(config.databaseURL);
-export const db = drizzle({ client });
+export const db = drizzle({ client: pool });

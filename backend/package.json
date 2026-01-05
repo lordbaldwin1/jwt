@@ -1,35 +1,40 @@
 {
   "name": "backend",
-  "module": "index.ts",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "test": "vitest --run",
+    "scrape": "tsx src/scrape.ts",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "studio": "drizzle-kit studio"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
-    "@types/bun": "latest",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.16.0",
     "drizzle-kit": "^0.31.8",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
     "vitest": "^4.0.16"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "bullmq": "^5.34.8",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
+    "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.3",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "playwright": "^1.49.1",
+    "zod": "^3.24.1"
   }
 }
